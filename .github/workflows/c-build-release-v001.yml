@@ -1,4 +1,4 @@
-name: C Release - V001
+name: C Release - DJGPP
 
 permissions:
   contents: write
