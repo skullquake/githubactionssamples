@@ -30,21 +30,21 @@ jobs:
       - name: Build for Linux
         run: |
           mkdir -p ./bin
-          gcc -o ./bin/test_linux_amd64 ./src/main.c
+          gcc -o ./bin/a.out./src/a.c
 
       - name: Build for Windows
         run: |
           mkdir -p ./bin
-          x86_64-w64-mingw32-gcc -o ./bin/test_windows_amd64.exe ./src/main.c
+          x86_64-w64-mingw32-gcc -o ./bin/a.exe ./src/a.c
 
       - name: Upload Linux Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/test_linux_amd64
+          files: src/c/bin/a.out
           tag_name: ${{ github.event.inputs.tag }}
 
       - name: Upload Windows Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/test_windows_amd64.exe
+          files: src/c/bin/a.exe
           tag_name: ${{ github.event.inputs.tag }}
