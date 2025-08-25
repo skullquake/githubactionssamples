@@ -24,4 +24,16 @@ Key steps:
 - Builds binaries for Linux and Windows
 - Uploads the binaries as release assets using the manually provided tag
 
-asdf
+### 3. `c-build-release-djgpp.yml`
+**DOS (DJGPP) C Release Workflow**
+
+This workflow builds and releases DOS executables from C source code using the DJGPP cross-compiler. It is triggered only when changes are pushed to the `main` branch and those changes affect files in `src/djgpp/`.
+
+Key steps:
+- Checks out the code
+- Downloads and extracts the DJGPP cross-compiler
+- Builds the DOS executable from your C source
+- Generates a unique tag for the release
+- Uploads the DOS binary as a release asset to GitHub Releases
+
+This workflow ensures that only changes to DOS-specific C code trigger a new DOS release build and upload.
