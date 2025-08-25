@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'src/djgpp/**'
 jobs:
   build:
     name: Build C Release Assets
