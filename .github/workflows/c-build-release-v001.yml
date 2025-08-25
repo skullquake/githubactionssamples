@@ -37,30 +37,30 @@ jobs:
       - name: Build for Linux
         run: |
           mkdir -p ./bin
-          gcc -o ./bin/a.out ./src/a.c
+          gcc -static -o ./bin/a_linux_static ./src/a.c
 
       - name: Build for Windows
         run: |
           mkdir -p ./bin
-          x86_64-w64-mingw32-gcc -o ./bin/a.exe ./src/a.c
+          x86_64-w64-mingw32-gcc -static -o ./bin/a_windows_static.exe ./src/a.c
 
       - name: Build for DOS
         env:
           PATH: $HOME/djgpp/bin:${PATH}
         run: |
           mkdir -p ./bin
-          i586-pc-msdosdjgpp-gcc -o ./bin/a.exe ./src/a.c
+          i586-pc-msdosdjgpp-gcc -o ./bin/a_dos.exe ./src/a.c
 
       - name: Upload Linux Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/a.out
+          files: src/c/bin/a_linux_static
           tag_name: ${{ github.event.inputs.tag }}
 
       - name: Upload Windows Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/a_windows.exe
+          files: src/c/bin/a_windows_static.exe
           tag_name: ${{ github.event.inputs.tag }}
 
       - name: Upload DOS Asset
