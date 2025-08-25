@@ -23,3 +23,5 @@ Key steps:
 - Sets up Go
 - Builds binaries for Linux and Windows
 - Uploads the binaries as release assets using the manually provided tag
+
+asdf
