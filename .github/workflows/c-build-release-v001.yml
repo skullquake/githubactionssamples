@@ -27,6 +27,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gcc mingw-w64
 
+      - name: Download and extract DJGPP (DOS cross-compiler)
+        run: |
+          wget https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2 -O /tmp/djgpp.tar.bz2
+          mkdir -p $HOME/djgpp
+          tar -xjf /tmp/djgpp.tar.bz2 -C $HOME/djgpp --strip-components=1
+
+
       - name: Build for Linux
         run: |
           mkdir -p ./bin
@@ -37,6 +44,13 @@ jobs:
           mkdir -p ./bin
           x86_64-w64-mingw32-gcc -o ./bin/a.exe ./src/a.c
 
+      - name: Build for DOS
+        env:
+          PATH: $HOME/djgpp/bin:${PATH}
+        run: |
+          mkdir -p ./bin
+          i586-pc-msdosdjgpp-gcc -o ./bin/a.exe ./src/a.c
+
       - name: Upload Linux Asset
         uses: softprops/action-gh-release@v1
         with:
@@ -46,5 +60,11 @@ jobs:
       - name: Upload Windows Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/a.exe
+          files: src/c/bin/a_windows.exe
+          tag_name: ${{ github.event.inputs.tag }}
+
+      - name: Upload DOS Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: src/c/bin/a_dos.exe
           tag_name: ${{ github.event.inputs.tag }}
