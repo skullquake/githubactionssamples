@@ -1,0 +1,32 @@
+name: Go Build
+
+on:
+  push:
+    paths:
+      - 'src/go/**'
+  pull_request:
+    paths:
+      - 'src/go/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/go
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: src/go/go.mod
+
+      - name: Build
+        run: |
+          go build -v -o bin/main .
+
+      - name: Run tests
+        run: |
+          go test -v ./...
