@@ -2,25 +2,20 @@ name: C Release - DJGPP
 permissions:
   contents: write
 on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to create release from (e.g. v1.0.0)'
-        required: true
-        type: string
+  push:
 jobs:
   build:
     name: Build C Release Assets
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: src/c
+        working-directory: src/djgpp
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Download and extract DJGPP (DOS cross-compiler)
         run: |
-          wget https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2 -O /tmp/djgpp.tar.bz2
+          wget -q https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2 -O /tmp/djgpp.tar.bz2
           mkdir -p $HOME/djgpp
           tar -xjf /tmp/djgpp.tar.bz2 -C $HOME/djgpp --strip-components=1
       - name: Build for DOS
@@ -28,9 +23,9 @@ jobs:
           PATH: /usr/bin:/bin:$HOME/djgpp/bin:${PATH}
         run: |
           mkdir -p ./bin
-          $HOME/djgpp/bin/i586-pc-msdosdjgpp-gcc -o ./bin/a_dos.exe ./src/a.c
+          $HOME/djgpp/bin/i586-pc-msdosdjgpp-gcc -o ./bin/a.exe ./src/a.c
       - name: Upload DOS Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: src/c/bin/a_dos.exe
+          files: src/djgpp/bin/a.exe
           tag_name: ${{ github.event.inputs.tag }}
