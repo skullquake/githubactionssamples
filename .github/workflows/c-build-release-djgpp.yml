@@ -24,10 +24,8 @@ jobs:
           echo mkdir -p $HOME/djgpp
           echo tar -xjf /tmp/djgpp.tar.bz2 -C $HOME/djgpp --strip-components=1
       - name: Build for DOS
+        env: $PATH:$HOME/djgpp/bin 
         run: |
-          echo $HOME/djgpp/bin >> $GITHUB_PATH
-          pwd
-          which mkdir
           echo $PATH
           mkdir -p ./bin
           i586-pc-msdosdjgpp-gcc -o ./bin/a_dos.exe ./src/a.c
