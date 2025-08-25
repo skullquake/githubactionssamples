@@ -21,11 +21,13 @@ jobs:
 
       - name: Build for Linux
         run: |
-          GOOS=linux GOARCH=amd64 go build -o test_linux_amd64 ./bin/test # Adjust path to your main package
+          mkdir -p ./bin
+          GOOS=linux GOARCH=amd64 go build -o ./bin/test_linux_amd64
 
       - name: Build for Windows
         run: |
-          GOOS=windows GOARCH=amd64 go build -o test_windows_amd64.exe ./bin/test
+          mkdir -p ./bin
+          GOOS=windows GOARCH=amd64 go build -o ./bin/test_windows_amd64.exe
 
       - name: Upload Linux Asset
         uses: softprops/action-gh-release@v1 # Or svenstaro/upload-release-action
