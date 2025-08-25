@@ -20,14 +20,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Download and extract DJGPP (DOS cross-compiler)
         run: |
-          echo wget https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2 -O /tmp/djgpp.tar.bz2
-          echo mkdir -p $HOME/djgpp
-          echo tar -xjf /tmp/djgpp.tar.bz2 -C $HOME/djgpp --strip-components=1
+          wget https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2 -O /tmp/djgpp.tar.bz2
+          mkdir -p $HOME/djgpp
+          tar -xjf /tmp/djgpp.tar.bz2 -C $HOME/djgpp --strip-components=1
       - name: Build for DOS
         env:
-          PATH: $PATH:$HOME/djgpp/bin 
+          PATH: /usr/bin:/bin:$HOME/djgpp/bin:${PATH}
         run: |
-          echo $PATH
           mkdir -p ./bin
           i586-pc-msdosdjgpp-gcc -o ./bin/a_dos.exe ./src/a.c
       - name: Upload DOS Asset
