@@ -2,6 +2,11 @@ name: Go Release
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to create release from (e.g. v1.0.0)'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -33,11 +38,13 @@ jobs:
         uses: softprops/action-gh-release@v1 # Or svenstaro/upload-release-action
         with:
           files: test_linux_amd64
+          tag_name: ${{ github.event.inputs.tag }}
 
       - name: Upload Windows Asset
         uses: softprops/action-gh-release@v1
         with:
           files: test_windows_amd64.exe
+          tag_name: ${{ github.event.inputs.tag }}
 
 
 
