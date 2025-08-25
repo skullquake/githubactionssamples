@@ -33,13 +33,13 @@ jobs:
 
       - name: Build for DOS
         env:
-          PATH: $HOME/djgpp/bin:${PATH}
         run: |
+          echo $HOME/djgpp/bin >> $GITHUB_PATH
           pwd
           which mkdir
+          echo $PATH
           mkdir -p ./bin
           i586-pc-msdosdjgpp-gcc -o ./bin/a_dos.exe ./src/a.c
-
 
 
       - name: Upload DOS Asset
