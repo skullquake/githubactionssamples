@@ -1,0 +1,50 @@
+name: C Release
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to create release from (e.g. v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build C Release Assets
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/c
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc x86_64-w64-mingw32-gcc
+
+      - name: Build for Linux
+        run: |
+          mkdir -p ./bin
+          gcc -o ./bin/test_linux_amd64 main.c
+
+      - name: Build for Windows
+        run: |
+          mkdir -p ./bin
+          x86_64-w64-mingw32-gcc -o ./bin/test_windows_amd64.exe main.c
+
+      - name: Upload Linux Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: src/c/bin/test_linux_amd64
+          tag_name: ${{ github.event.inputs.tag }}
+
+      - name: Upload Windows Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: src/c/bin/test_windows_amd64.exe
+          tag_name: ${{ github.event.inputs.tag }}
